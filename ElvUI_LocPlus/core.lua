@@ -1,4 +1,3 @@
-local addon, ns = ...;
 local E, L, V, P, G = unpack(ElvUI);
 local LPB = E:NewModule("LocationPlus", "AceTimer-3.0");
 local DT = E:GetModule("DataTexts");
@@ -79,20 +78,9 @@ local function UpdateTooltip()
 
 	GameTooltip:AddDoubleLine(HOME .. ":", GetBindLocation(), 1, 1, 1, 0.41, 0.8, 0.94);
 
-	if(E.db.locplus.ttst) then
-		GameTooltip:AddDoubleLine(STATUS .. ":", GetStatus(false), 1, 1, 1);
-	end
-
-	if(E.db.locplus.curr) then
-		for i = 1, MAX_WATCHED_TOKENS do
-			local name, count, _, icon = GetBackpackCurrencyInfo(i);
-			if(name and i == 1) then
-				GameTooltip:AddLine(" ");
-				GameTooltip:AddLine(CURRENCY .. ":", selectioncolor);
-			end
-			if(name and count) then GameTooltip:AddDoubleLine(format("|T%s:14:14:0:0:64:64:4:60:4:60|t %s", icon, name), format("%s", count), 1, 1, 1, selectioncolor); end
-		end
-	end
+	-- if(E.db.locplus.ttst) then
+	-- 	GameTooltip:AddDoubleLine(L["Status"] .. ":", GetStatus(false), 1, 1, 1);
+	-- end
 
 	if(E.db.locplus.tt) then
 		if(E.db.locplus.tthint) then
@@ -376,7 +364,7 @@ function LPB:UpdateLocation()
 
 	if(displayLine ~= "") then
 		if(E.db.locplus.customColor == 1) then
-			LocationPlusPanel.Text:SetTextColor(GetStatus(true))
+			-- LocationPlusPanel.Text:SetTextColor(GetStatus(true))
 		elseif(E.db.locplus.customColor == 2) then
 			LocationPlusPanel.Text:SetTextColor(classColor.r, classColor.g, classColor.b);
 		else
@@ -394,7 +382,7 @@ function LPB:UpdateLocation()
 		LocationPlusPanel:Width(fixedwidth);
 		if(E.db.locplus.trunc) then
 			LocationPlusPanel.Text:Width(fixedwidth - 18);
-			LocationPlusPanel.Text:SetWordWrap(false);
+			-- LocationPlusPanel.Text:SetWordWrap(false);
 		elseif(autowidth > fixedwidth) then
 			LocationPlusPanel:Width(autowidth);
 			LocationPlusPanel.Text:Width(autowidth);
@@ -506,7 +494,7 @@ function LPB:Initialize()
 	self:LocPlusUpdate();
 	self:TimerUpdate();
 	self:ScheduleRepeatingTimer("UpdateLocation", 0.5);
-	EP:RegisterPlugin(addon, LPB.AddOptions);
+	EP:RegisterPlugin("ElvUI_LocPlus", LPB.AddOptions);
 	LocationPlusPanel:RegisterEvent("PLAYER_REGEN_DISABLED");
 	LocationPlusPanel:RegisterEvent("PLAYER_REGEN_ENABLED");
 	LocationPlusPanel:RegisterEvent("PET_BATTLE_CLOSE");
