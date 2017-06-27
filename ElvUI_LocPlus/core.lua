@@ -42,7 +42,7 @@ local function GetStatus(color)
 		status = ARENA;
 		r, g, b = 1, 0.1, 0.1;
 	elseif(pvpType == "friendly") then
-		status = FRIENDLY;
+		status = L["Friendly"];
 		r, g, b = 0.1, 1, 0.1;
 	elseif(pvpType == "hostile") then
 		status = HOSTILE;
@@ -54,7 +54,7 @@ local function GetStatus(color)
 		status = COMBAT;
 		r, g, b = 1, 0.1, 0.1;
 	elseif(inInstance) then
-		status = AGGRO_WARNING_IN_INSTANCE;
+		status = L["In Instance"];
 		r, g, b = 1, 0.1, 0.1;
 	else
 		status = CONTESTED_TERRITORY;
@@ -78,9 +78,9 @@ local function UpdateTooltip()
 
 	GameTooltip:AddDoubleLine(HOME .. ":", GetBindLocation(), 1, 1, 1, 0.41, 0.8, 0.94);
 
-	-- if(E.db.locplus.ttst) then
-	-- 	GameTooltip:AddDoubleLine(L["Status"] .. ":", GetStatus(false), 1, 1, 1);
-	-- end
+	if(E.db.locplus.ttst) then
+		GameTooltip:AddDoubleLine(L["Status"] .. ":", GetStatus(false), 1, 1, 1);
+	end
 
 	if(E.db.locplus.tt) then
 		if(E.db.locplus.tthint) then
@@ -364,7 +364,7 @@ function LPB:UpdateLocation()
 
 	if(displayLine ~= "") then
 		if(E.db.locplus.customColor == 1) then
-			-- LocationPlusPanel.Text:SetTextColor(GetStatus(true))
+			LocationPlusPanel.Text:SetTextColor(GetStatus(true))
 		elseif(E.db.locplus.customColor == 2) then
 			LocationPlusPanel.Text:SetTextColor(classColor.r, classColor.g, classColor.b);
 		else
@@ -382,7 +382,6 @@ function LPB:UpdateLocation()
 		LocationPlusPanel:Width(fixedwidth);
 		if(E.db.locplus.trunc) then
 			LocationPlusPanel.Text:Width(fixedwidth - 18);
-			-- LocationPlusPanel.Text:SetWordWrap(false);
 		elseif(autowidth > fixedwidth) then
 			LocationPlusPanel:Width(autowidth);
 			LocationPlusPanel.Text:Width(autowidth);
