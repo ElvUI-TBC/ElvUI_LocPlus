@@ -143,7 +143,6 @@ local function LocPanel_OnClick(_, btn)
 	local zoneText = GetRealZoneText() or UNKNOWN;
 	if(btn == "LeftButton") then
 		if(IsShiftKeyDown()) then
-			local edit_box = ChatEdit_ChooseBoxForSend();
 			local x, y = CreateCoords();
 			local message;
 			local coords = x .. ", " .. y;
@@ -152,8 +151,13 @@ local function LocPanel_OnClick(_, btn)
 			else
 				message = format("%s (%s)", zoneText, coords);
 			end
-			ChatEdit_ActivateChat(edit_box);
-			edit_box:Insert(message);
+
+			if(not ChatFrameEditBox:IsShown()) then
+				ChatFrameEditBox:Show()
+				ChatEdit_UpdateHeader(ChatFrameEditBox)
+			end
+			ChatFrameEditBox:Insert(message);
+			ChatFrameEditBox:HighlightText();
 		else
 			if(IsControlKeyDown()) then
 				LeftCoordDtPanel:SetScript("OnShow", function() E.db.locplus.dtshow = true; end);
