@@ -7,6 +7,6 @@
 ## OptionalDeps: LibTourist-3.0
 ## DefaultState: Enabled
 
-libs\load_libs.xml
+Libraries\Load_Libraries.xml
 locales\load_locales.xml
 init.xml

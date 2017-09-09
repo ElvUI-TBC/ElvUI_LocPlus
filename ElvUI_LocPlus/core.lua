@@ -23,7 +23,7 @@ local UIFrameFadeIn, UIFrameFadeOut, ToggleFrame = UIFrameFadeIn, UIFrameFadeOut
 local IsControlKeyDown, IsShiftKeyDown = IsControlKeyDown, IsShiftKeyDown
 local GameTooltip, WorldMapFrame = _G["GameTooltip"], _G["WorldMapFrame"]
 
-local PLAYER, UNKNOWN, TRADE_SKILLS, DUNGEONS, LEVEL_RANGE, STATUS, HOME, CONTINENT = PLAYER, UNKNOWN, TRADE_SKILLS, DUNGEONS, LEVEL_RANGE, STATUS, HOME, CONTINENT
+local PLAYER, UNKNOWN, TRADE_SKILLS, LEVEL_RANGE, STATUS, HOME, CONTINENT = PLAYER, UNKNOWN, TRADE_SKILLS, LEVEL_RANGE, STATUS, HOME, CONTINENT
 local SANCTUARY_TERRITORY, ARENA, HOSTILE, CONTESTED_TERRITORY, COMBAT, AGGRO_WARNING_IN_INSTANCE, PVP, RAID = SANCTUARY_TERRITORY, ARENA, HOSTILE, CONTESTED_TERRITORY, COMBAT, AGGRO_WARNING_IN_INSTANCE, PVP, RAID
 
 -- GLOBALS: LocationPlusPanel, LeftCoordDtPanel, RightCoordDtPanel, XCoordsPanel, YCoordsPanel, selectioncolor, continent, continentID
@@ -34,74 +34,13 @@ local right_dtp = CreateFrame("Frame", "RightCoordDtPanel", E.UIParent)
 local COORDS_WIDTH = 30 -- Coord panels width
 local classColor = RAID_CLASS_COLORS[E.myclass] -- for text coloring
 
------------------
--- Currency Table
------------------
--- Add below the currency id you wish to track.
--- Find the currency ids: http://www.wowhead.com/currencies .
--- Click on the wanted currency and in the address you will see the id.
--- e.g. for Bloody Coin, you will see http://www.wowhead.com/currency=789 . 789 is the id.
--- So, on this case, add 789, (don"t forget the comma).
--- If there are 0 earned points, the currency will be filtered out.
-
-local currency = {
-	--395,	-- Justice Points
-	--396,	-- Valor Points
-	--777,	-- Timeless Coins
-	--697,	-- Elder Charm of Good Fortune
-	--738,	-- Lesser Charm of Good Fortune
-	390,	-- Conquest Points
-	392,	-- Honor Points
-	--515,	-- Darkmoon Prize Ticket
-	--402,	-- Ironpaw Token
-	--776,	-- Warforged Seal
-
-	-- WoD
-	--824,	-- Garrison Resources
-	--823,	-- Apexis Crystal (for gear, like the valors)
-	--994,	-- Seal of Tempered Fate (Raid loot roll)
-	--980,	-- Dingy Iron Coins (rogue only, from pickpocketing)
-	--944,	-- Artifact Fragment (PvP)
-	--1101,	-- Oil
-	--1129,	-- Seal of Inevitable Fate
-	--821,	-- Draenor Clans Archaeology Fragment
-	--828,	-- Ogre Archaeology Fragment
-	--829,	-- Arakkoa Archaeology Fragment
-	1166, 	-- Timewarped Badge (6.22)
-	--1191,	-- Valor Points (6.23)
-
-	-- Legion
-	--1226,	-- Nethershard (Invasion scenarios)
-	1172,	-- Highborne Archaeology Fragment
-	1173,	-- Highmountain Tauren Archaeology Fragment
-	--1155,	-- Ancient Mana
-	1220,	-- Order Resources
-	1275,	-- Curious Coin (Buy stuff :P)
-	--1226,	-- Nethershard (Invasion scenarios)
-	1273,	-- Seal of Broken Fate (Raid)
-	--1154,	-- Shadowy Coins
-	--1149,	-- Sightless Eye (PvP)
-	--1268,	-- Timeworn Artifact (Honor Points?)
-	--1299,	-- Brawler"s Gold
-	--1314,	-- Lingering Soul Fragment (Good luck with this one :D)
-	1342,	-- Legionfall War Supplies (Construction at the Broken Shore)
-	1355,	-- Felessence (Craft Legentary items)
-	--1356,	-- Echoes of Battle (PvP Gear)
-	--1357,	-- Echoes of Domination (Elite PvP Gear)
-	1416,	-- Coins of Air
-	1506,	-- Argus Waystone
-}
-------------------------
--- end of Currency Table
-------------------------
-
 LPB.version = GetAddOnMetadata("ElvUI_LocPlus", "Version")
 
 if E.db.locplus == nil then E.db.locplus = {} end
 
 do
-	DT:RegisterPanel(LeftCoordDtPanel, 1, "ANCHOR_BOTTOM", 0, -4)
-	DT:RegisterPanel(RightCoordDtPanel, 1, "ANCHOR_BOTTOM", 0, -4)
+	DT:RegisterPanel(LeftCoordDtPanel, 1, "ANCHOR_BOTTOMLEFT", 100, -4)
+	DT:RegisterPanel(RightCoordDtPanel, 1, "ANCHOR_BOTTOMRIGHT", -100, -4)
 
 	L["RightCoordDtPanel"] = L["LocationPlus Right Panel"]
 	L["LeftCoordDtPanel"] = L["LocationPlus Left Panel"]
@@ -224,9 +163,7 @@ local function GetZoneDungeons(dungeon)
 	local low, high = tourist:GetLevel(dungeon)
 	local r, g, b = tourist:GetLevelColor(dungeon)
 	local groupSize = tourist:GetInstanceGroupSize(dungeon)
-	local altGroupSize = tourist:GetInstanceAltGroupSize(dungeon)
 	local groupSizeStyle = (groupSize > 0 and format("|cFFFFFF00|r (%d", groupSize) or "")
-	local altGroupSizeStyle = (altGroupSize > 0 and format("|cFFFFFF00|r/%d", altGroupSize) or "")
 	local name = dungeon
 
 	if PvPorRaidFilter(dungeon) == nil then return end
@@ -234,7 +171,6 @@ local function GetZoneDungeons(dungeon)
 	GameTooltip:AddDoubleLine(
 	"|cffffffff"..name
 	..(groupSizeStyle or "")
-	..(altGroupSizeStyle or "").."-"..PLAYER..") "
 	..GetDungeonCoords(dungeon)
 	..PvPorRaidFilter(dungeon) or "",
 	("|cff%02x%02x%02x%s|r"):format(r *255, g *255, b *255,(low == high and low or ("%d-%d"):format(low, high))))
@@ -339,7 +275,7 @@ local function UpdateTooltip()
 	-- Instances in the zone
 	if E.db.locplus.ttinst and tourist:DoesZoneHaveInstances(zoneText) then
 		GameTooltip:AddLine(" ")
-		GameTooltip:AddLine(curPos..DUNGEONS.." :", selectioncolor)
+		GameTooltip:AddLine(curPos..L["Dungeons :"], selectioncolor)
 
 		for dungeon in tourist:IterateZoneInstances(zoneText) do
 			GetZoneDungeons(dungeon)
@@ -361,7 +297,7 @@ local function UpdateTooltip()
 	if E.db.locplus.tt then
 		if E.db.locplus.tthint then
 			GameTooltip:AddLine(" ")
-			GameTooltip:AddDoubleLine(L["Click : "], L["Toggle WorldMap"], 0.7, 0.7, 1, 0.7, 0.7, 1)
+			GameTooltip:AddDoubleLine(L["LeftClick : "], L["Toggle WorldMap"], 0.7, 0.7, 1, 0.7, 0.7, 1)
 			GameTooltip:AddDoubleLine(L["RightClick : "], L["Toggle Configuration"],0.7, 0.7, 1, 0.7, 0.7, 1)
 			GameTooltip:AddDoubleLine(L["ShiftClick : "], L["Send position to chat"],0.7, 0.7, 1, 0.7, 0.7, 1)
 			GameTooltip:AddDoubleLine(L["CtrlClick : "], L["Toggle Datatexts"],0.7, 0.7, 1, 0.7, 0.7, 1)
@@ -375,7 +311,8 @@ end
 
 -- mouse over the location panel
 local function LocPanel_OnEnter(self,...)
-	GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT", self:GetWidth() + 36, -4)
+	local width = self:GetWidth()
+	GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT", width, -4)
 	GameTooltip:ClearAllPoints()
 	GameTooltip:SetPoint("BOTTOM", self, "BOTTOM", 0, 0)
 

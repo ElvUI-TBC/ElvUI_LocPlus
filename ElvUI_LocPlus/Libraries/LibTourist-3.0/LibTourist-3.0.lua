@@ -175,7 +175,7 @@ function Tourist:GetLevelColor(zone)
 		end
 	end
 	local low, high = lows[zone], highs[zone]
-	
+
 	if low <= 0 and high <= 0 then
 		-- City
 		return 1, 1, 1
@@ -228,30 +228,30 @@ function Tourist:GetYardDistance(zone1, x1, y1, zone2, x2, y2)
 	end
 	local zone1_yardYOffset = yardYOffsets[zone1]
 	local zone2_yardYOffset = yardYOffsets[zone2]
-	
+
 	local zone1_continent = continents[zone1]
 	local zone2_continent = continents[zone2]
 	if (zone1_continent == Outland) ~= (zone2_continent == Outland) then
 		return nil
 	end
-	
+
 	local zone1_yardWidth = yardWidths[zone1]
 	local zone1_yardHeight = yardHeights[zone1]
 	local zone2_yardWidth = yardWidths[zone2]
 	local zone2_yardHeight = yardHeights[zone2]
-	
+
 	local x1_yard = zone1_yardWidth*x1
 	local y1_yard = zone1_yardHeight*y1
 	local x2_yard = zone2_yardWidth*x2
 	local y2_yard = zone2_yardHeight*y2
-	
+
 	if zone1 ~= zone2 then
 		x1_yard = x1_yard + zone1_yardXOffset
 		y1_yard = y1_yard + zone1_yardYOffset
-		
+
 		x2_yard = x2_yard + zone2_yardXOffset
 		y2_yard = y2_yard + zone2_yardYOffset
-		
+
 		if zone1_continent ~= zone2_continent then
 			if zone1_continent == Kalimdor then
 				x1_yard = x1_yard + kalXOffset
@@ -260,7 +260,7 @@ function Tourist:GetYardDistance(zone1, x1, y1, zone2, x2, y2)
 				x1_yard = x1_yard + ekXOffset
 				y1_yard = y1_yard + ekYOffset
 			end
-		
+
 			if zone2_continent == Kalimdor then
 				x2_yard = x2_yard + kalXOffset
 				y2_yard = y2_yard + kalYOffset
@@ -270,7 +270,7 @@ function Tourist:GetYardDistance(zone1, x1, y1, zone2, x2, y2)
 			end
 		end
 	end
-	
+
 	local x_diff = x1_yard - x2_yard
 	local y_diff = y1_yard - y2_yard
 	local dist_2 = x_diff*x_diff + y_diff*y_diff
@@ -281,7 +281,7 @@ function Tourist:TransposeZoneCoordinate(x, y, zone1, zone2)
 	if zone1 == zone2 then
 		return x, y
 	end
-	
+
 	local zone1_yardXOffset = yardXOffsets[zone1]
 	if not zone1_yardXOffset then
 		return nil
@@ -292,24 +292,24 @@ function Tourist:TransposeZoneCoordinate(x, y, zone1, zone2)
 	end
 	local zone1_yardYOffset = yardYOffsets[zone1]
 	local zone2_yardYOffset = yardYOffsets[zone2]
-	
+
 	local zone1_continent = continents[zone1]
 	local zone2_continent = continents[zone2]
 	if (zone1_continent == Outland) ~= (zone2_continent == Outland) then
 		return nil
 	end
-	
+
 	local zone1_yardWidth = yardWidths[zone1]
 	local zone1_yardHeight = yardHeights[zone1]
 	local zone2_yardWidth = yardWidths[zone2]
 	local zone2_yardHeight = yardHeights[zone2]
-	
+
 	local x_yard = zone1_yardWidth*x
 	local y_yard = zone1_yardHeight*y
-	
+
 	x_yard = x_yard + zone1_yardXOffset
 	y_yard = y_yard + zone1_yardYOffset
-	
+
 	if zone1_continent ~= zone2_continent then
 		if zone1_continent == Kalimdor then
 			x_yard = x_yard + kalXOffset
@@ -318,7 +318,7 @@ function Tourist:TransposeZoneCoordinate(x, y, zone1, zone2)
 			x_yard = x_yard + ekXOffset
 			y_yard = y_yard + ekYOffset
 		end
-	
+
 		if zone2_continent == Kalimdor then
 			x_yard = x_yard - kalXOffset
 			y_yard = y_yard - kalYOffset
@@ -327,13 +327,13 @@ function Tourist:TransposeZoneCoordinate(x, y, zone1, zone2)
 			y_yard = y_yard - ekYOffset
 		end
 	end
-	
+
 	x_yard = x_yard - zone2_yardXOffset
 	y_yard = y_yard - zone2_yardYOffset
-	
+
 	x = x_yard / zone2_yardWidth
 	y = y_yard / zone2_yardHeight
-	
+
 	return x, y
 end
 
@@ -360,22 +360,22 @@ function Tourist:GetBestZoneCoordinate(x, y, zone)
 		ek_yardWidth = yardWidths[Eastern_Kingdoms]
 		ek_yardHeight = yardHeights[Eastern_Kingdoms]
 	end
-	
+
 	local zone_yardXOffset = yardXOffsets[zone]
 	if not zone_yardXOffset then
 		return x, y, zone
 	end
 	local zone_yardYOffset = yardYOffsets[zone]
-	
+
 	local zone_yardWidth = yardWidths[zone]
 	local zone_yardHeight = yardHeights[zone]
-	
+
 	local x_yard = zone_yardWidth*x
 	local y_yard = zone_yardHeight*y
-	
+
 	x_yard = x_yard + zone_yardXOffset
 	y_yard = y_yard + zone_yardYOffset
-	
+
 	local zone_continent = continents[zone]
 	local azeroth = false
 	if zone_continent == Kalimdor then
@@ -411,18 +411,18 @@ function Tourist:GetBestZoneCoordinate(x, y, zone)
 			return x_yard / yardWidths[Azeroth], y_yard / yardHeights[Azeroth], Azeroth
 		end
 	end
-	
+
 	local best_zone, best_x, best_y, best_value
-	
+
 	for _,z in ipairs(zonesToIterate[zone_continent]) do
 		local z_yardXOffset = yardXOffsets[z]
 		local z_yardYOffset = yardYOffsets[z]
 		local z_yardWidth = yardWidths[z]
 		local z_yardHeight = yardHeights[z]
-		
+
 		local x_yd = x_yard - z_yardXOffset
 		local y_yd = y_yard - z_yardYOffset
-		
+
 		if x_yd >= 0 and y_yd >= 0 and x_yd <= z_yardWidth and y_yd <= z_yardHeight then
 			if types[z] == "City" then
 				return x_yd/z_yardWidth, y_yd/z_yardHeight,  z
@@ -462,7 +462,7 @@ local function mysort(a,b)
 		return false
 	elseif not lows[b] then
 		return true
-	else	
+	else
 		local aval, bval = groupSizes[a], groupSizes[b]
 		if aval ~= bval then
 			return aval < bval
@@ -477,7 +477,7 @@ local function mysort(a,b)
 		end
 		return a < b
 	end
-end	
+end
 local t = {}
 local function myiter(t)
 	local n = t.n
@@ -493,7 +493,7 @@ local function myiter(t)
 end
 function Tourist:IterateZoneInstances(zone)
 	local inst = instances[zone]
-	
+
 	if not inst then
 		return retNil
 	elseif type(inst) == "table" then
@@ -837,11 +837,11 @@ end
 setmetatable(cost, {
 	__index = function(self, vertex)
 		local price = 1
-		
+
 		if lows[vertex] > playerLevel then
 			price = price * (1 + math.ceil((lows[vertex] - playerLevel) / 6))
 		end
-		
+
 		if factions[vertex] == (isHorde and "Horde" or "Alliance") then
 			price = price / 2
 		elseif factions[vertex] == (isHorde and "Alliance" or "Horde") then
@@ -851,11 +851,11 @@ setmetatable(cost, {
 				price = price * 3
 			end
 		end
-		
+
 		if types[x] == "Transport" then
 			price = price * 2
 		end
-		
+
 		self[vertex] = price
 		return price
 	end
@@ -865,7 +865,7 @@ function Tourist:IteratePath(alpha, bravo)
 	if paths[alpha] == nil or paths[bravo] == nil then
 		return retNil
 	end
-	
+
 	local d = next(stack) or {}
 	stack[d] = nil
 	local Q = next(stack) or {}
@@ -874,13 +874,13 @@ function Tourist:IteratePath(alpha, bravo)
 	stack[S] = nil
 	local pi = next(stack) or {}
 	stack[pi] = nil
-	
+
 	for vertex, v in pairs(paths) do
 		d[vertex] = inf
 		Q[vertex] = v
 	end
 	d[alpha] = 0
-	
+
 	while next(Q) do
 		local u
 		local min = inf
@@ -898,7 +898,7 @@ function Tourist:IteratePath(alpha, bravo)
 		if u == bravo then
 			break
 		end
-		
+
 		local adj = paths[u]
 		if type(adj) == "table" then
 			local d_u = d[u]
@@ -917,7 +917,7 @@ function Tourist:IteratePath(alpha, bravo)
 			end
 		end
 	end
-	
+
 	local i = 1
 	local last = bravo
 	while last do
@@ -925,7 +925,7 @@ function Tourist:IteratePath(alpha, bravo)
 		i = i + 1
 		last = pi[last]
 	end
-	
+
 	for k in pairs(pi) do
 		pi[k] = nil
 	end
@@ -938,9 +938,9 @@ function Tourist:IteratePath(alpha, bravo)
 	stack[pi] = true
 	stack[Q] = true
 	stack[d] = true
-	
+
 	S['#'] = i
-	
+
 	return iterator, S
 end
 
@@ -978,7 +978,7 @@ do
 	Tourist.frame:SetScript("OnEvent", function()
 		PLAYER_LEVEL_UP(Tourist)
 	end)
-	
+
 	local BOOTYBAY_RATCHET_BOAT = string.format(X_Y_BOAT, BZ["Booty Bay"], BZ["Ratchet"])
 	local MENETHIL_THERAMORE_BOAT = string.format(X_Y_BOAT, BZ["Menethil Harbor"], BZ["Theramore Isle"])
 	local MENETHIL_AUBERDINE_BOAT = string.format(X_Y_BOAT, BZ["Menethil Harbor"], BZ["Auberdine"])
@@ -995,9 +995,9 @@ do
 	local SHATTRATH_UNDERCITY_PORTAL = string.format(X_Y_PORTAL, BZ["Shattrath City"], BZ["Undercity"])
 	local SHATTRATH_EXODAR_PORTAL = string.format(X_Y_PORTAL, BZ["Shattrath City"], BZ["The Exodar"])
 	local SHATTRATH_SILVERMOON_PORTAL = string.format(X_Y_PORTAL, BZ["Shattrath City"], BZ["Silvermoon City"])
-	
+
 	local zones = {}
-	
+
 	zones[BZ["Eastern Kingdoms"]] = {
 		type = "Continent",
 		yards = 40741.175327834,
@@ -1005,7 +1005,7 @@ do
 		y_offset = 0,
 		continent = Eastern_Kingdoms,
 	}
-	
+
 	zones[BZ["Kalimdor"]] = {
 		type = "Continent",
 		yards = 36798.56388065484,
@@ -1013,7 +1013,7 @@ do
 		y_offset = 0,
 		continent = Kalimdor,
 	}
-	
+
 	zones[BZ["Outland"]] = {
 		type = "Continent",
 		yards = 17463.5328406368,
@@ -1021,7 +1021,7 @@ do
 		y_offset = 0,
 		continent = Outland,
 	}
-	
+
 	zones[Northrend] = {
 		type = "Continent",
 		yards = 10000,
@@ -1036,7 +1036,7 @@ do
 		x_offset = 0,
 		y_offset = 0,
 	}
-	
+
 	zones[AUBERDINE_AZUREMYST_BOAT] = {
 		paths = {
 			[BZ["Darkshore"]] = true,
@@ -1045,7 +1045,7 @@ do
 		faction = "Alliance",
 		type = "Transport",
 	}
-	
+
 	zones[AUBERDINE_DARNASSUS_BOAT] = {
 		paths = {
 			[BZ["Darkshore"]] = true,
@@ -1098,47 +1098,47 @@ do
 		faction = "Horde",
 		type = "Transport",
 	}
-	
+
 	zones[SHATTRATH_DARNASSUS_PORTAL] = {
 		paths = BZ["Darnassus"],
 		type = "Transport",
 	}
-	
+
 	zones[SHATTRATH_EXODAR_PORTAL] = {
 		paths = BZ["The Exodar"],
 		type = "Transport",
 	}
-	
+
 	zones[SHATTRATH_IRONFORGE_PORTAL] = {
 		paths = BZ["Ironforge"],
 		type = "Transport",
 	}
-	
+
 	zones[SHATTRATH_ORGRIMMAR_PORTAL] = {
 		paths = BZ["Orgrimmar"],
 		type = "Transport",
 	}
-	
+
 	zones[SHATTRATH_SILVERMOON_PORTAL] = {
 		paths = BZ["Silvermoon City"],
 		type = "Transport",
 	}
-	
+
 	zones[SHATTRATH_STORMWIND_PORTAL] = {
 		paths = BZ["Stormwind City"],
 		type = "Transport",
 	}
-	
+
 	zones[SHATTRATH_THUNDERBLUFF_PORTAL] = {
 		paths = BZ["Thunder Bluff"],
 		type = "Transport",
 	}
-	
+
 	zones[SHATTRATH_UNDERCITY_PORTAL] = {
 		paths = BZ["Undercity"],
 		type = "Transport",
 	}
-	
+
 	zones[BZ["The Dark Portal"]] = {
 		paths = {
 			[BZ["Blasted Lands"]] = true,
@@ -1200,7 +1200,7 @@ do
 		type = "City",
 		fishing_min = 1,
 	}
-	
+
 	zones[BZ["Silvermoon City"]] = {
 		continent = Eastern_Kingdoms,
 		paths = {
@@ -1211,7 +1211,7 @@ do
 		type = "City",
 		fishing_min = 1,
 	}
-	
+
 	zones[BZ["Stormwind City"]] = {
 		continent = Eastern_Kingdoms,
 		instances = BZ["The Stockade"],
@@ -1225,13 +1225,13 @@ do
 		type = "City",
 		fishing_min = 1,
 	}
-	
+
 	zones[BZ["Champions' Hall"]] = {
 		continent = Eastern_Kingdoms,
 		paths = BZ["Stormwind City"],
 		faction = "Alliance",
 	}
-	
+
 	zones[BZ["Undercity"]] = {
 		continent = Eastern_Kingdoms,
 		instances = {
@@ -1247,7 +1247,7 @@ do
 		faction = "Horde",
 		type = "City",
 	}
-	
+
 	zones[BZ["Dun Morogh"]] = {
 		low = 1,
 		high = 10,
@@ -1262,7 +1262,7 @@ do
 		faction = "Alliance",
 		fishing_min = 1,
 	}
-	
+
 	zones[BZ["Elwynn Forest"]] = {
 		low = 1,
 		high = 10,
@@ -1277,7 +1277,7 @@ do
 		faction = "Alliance",
 		fishing_min = 1,
 	}
-	
+
 	zones[BZ["Eversong Woods"]] = {
 		low = 1,
 		high = 10,
@@ -1289,7 +1289,7 @@ do
 		faction = "Horde",
 		fishing_min = 20,
 	}
-	
+
 	zones[BZ["Tirisfal Glades"]] = {
 		low = 1,
 		high = 10,
@@ -1311,11 +1311,11 @@ do
 		faction = "Horde",
 		fishing_min = 1,
 	}
-	
+
 	zones[BZ["Amani Pass"]] = {
 		continent = Eastern_Kingdoms,
 	}
-	
+
 	zones[BZ["Ghostlands"]] = {
 		low = 10,
 		high = 20,
@@ -1329,7 +1329,7 @@ do
 		faction = "Horde",
 		fishing_min = 20,
 	}
-	
+
 	zones[BZ["Loch Modan"]] = {
 		low = 10,
 		high = 20,
@@ -1831,7 +1831,7 @@ do
 		type = "Instance",
 		entrancePortal = { BZ["Eastern Plaguelands"], 40, 26 },
 	}
-	
+
 	zones[BZ["Karazhan"]] = {
 		low = 70,
 		high = 70,
@@ -1841,7 +1841,7 @@ do
 		type = "Instance",
 		entrancePortal = { BZ["Deadwind Pass"], 40.9, 73.2 },
 	}
-	
+
 	zones[BZ["Zul'Aman"]] = {
 		low = 70,
 		high = 70,
@@ -1888,13 +1888,13 @@ do
 		type = "City",
 		fishing_min = 1,
 	}
-	
+
 	zones[BZ["Hall of Legends"]] = {
 		continent = Kalimdor,
 		paths = BZ["Orgrimmar"],
 		faction = "Horde",
 	}
-	
+
 	zones[BZ["The Exodar"]] = {
 		continent = Kalimdor,
 		paths = BZ["Azuremyst Isle"],
@@ -1909,7 +1909,7 @@ do
 		faction = "Horde",
 		type = "City",
 	}
-	
+
 	zones[BZ["Azuremyst Isle"]] = {
 		low = 1,
 		high = 10,
@@ -1958,7 +1958,7 @@ do
 		faction = "Alliance",
 		fishing_min = 1,
 	}
-	
+
 	zones[BZ["Bloodmyst Isle"]] = {
 		low = 10,
 		high = 20,
@@ -2093,7 +2093,7 @@ do
 		},
 		fishing_min = 205,
 	}
-	
+
 	zones[BZ["Tanaris"]] = {
 		low = 40,
 		high = 50,
@@ -2286,7 +2286,7 @@ do
 		type = "Instance",
 		entrancePortal = { BZ["Silithus"], 29.3, 94 },
 	}
-	
+
 	zones[BZ["Caverns of Time"]] = {
 		continent = Kalimdor,
 		instances = {
@@ -2302,7 +2302,7 @@ do
 		},
 		entrancePortal = { BZ["Tanaris"], 66.2, 49.3 },
 	}
-	
+
 	zones[BZ["Old Hillsbrad Foothills"]] = {
 		low = 66,
 		high = 68,
@@ -2313,7 +2313,7 @@ do
 		complex = BZ["Caverns of Time"],
 		entrancePortal = { BZ["Tanaris"], 66.2, 49.3 },
 	}
-	
+
 	zones[BZ["The Black Morass"]] = {
 		low = 67,
 		high = 72,
@@ -2324,7 +2324,7 @@ do
 		complex = BZ["Caverns of Time"],
 		entrancePortal = { BZ["Tanaris"], 66.2, 49.3 },
 	}
-	
+
 	zones[BZ["Hyjal Summit"]] = {
 		low = 70,
 		high = 72,
@@ -2335,7 +2335,7 @@ do
 		complex = BZ["Caverns of Time"],
 		entrancePortal = { BZ["Tanaris"], 66.2, 49.3 },
 	}
-	
+
 	zones[BZ["Shattrath City"]] = {
 		continent = Outland,
 		paths = {
@@ -2352,7 +2352,7 @@ do
 		},
 		type = "City",
 	}
-	
+
 	zones[BZ["Hellfire Citadel"]] = {
 		continent = Outland,
 		instances = {
@@ -2370,7 +2370,7 @@ do
 		},
 		entrancePortal = { BZ["Hellfire Peninsula"], 46.8, 54.9 },
 	}
-	
+
 	zones[BZ["Hellfire Peninsula"]] = {
 		low = 58,
 		high = 63,
@@ -2389,7 +2389,7 @@ do
 		},
         type = "PvP Zone",
 	}
-	
+
 	zones[BZ["Coilfang Reservoir"]] = {
 		continent = Outland,
 		instances = {
@@ -2407,7 +2407,7 @@ do
 		},
 		entrancePortal = { BZ["Zangarmarsh"], 50.2, 40.8 },
 	}
-	
+
 	zones[BZ["Zangarmarsh"]] = {
 		low = 60,
 		high = 64,
@@ -2492,7 +2492,7 @@ do
 			[BZ["Zangarmarsh"]] = true,
 		},
 	}
-	
+
 	zones[BZ["Tempest Keep"]] = {
 		continent = Outland,
 		instances = {
@@ -2510,7 +2510,7 @@ do
 		},
 		entrancePortal = { BZ["Netherstorm"], 76.5, 65.1 },
 	}
-	
+
 	zones[BZ["Netherstorm"]] = {
 		low = 67,
 		high = 70,
@@ -2535,7 +2535,7 @@ do
 		instances = BZ["Black Temple"],
 		paths = BZ["Terokkar Forest"],
 	}
-	
+
 	zones[BZ["Black Temple"]] = {
 		low = 70,
 		high = 70,
@@ -2545,7 +2545,7 @@ do
 		type = "Instance",
 		entrancePortal = { BZ["Shadowmoon Valley"], 77.7, 43.7 },
 	}
-	
+
 	zones[BZ["Auchenai Crypts"]] = {
 		low = 65,
 		high = 67,
@@ -2556,7 +2556,7 @@ do
 		complex = BZ["Auchindoun"],
 		entrancePortal = { BZ["Terokkar Forest"], 39.6, 65.5 },
 	}
-	
+
 	zones[BZ["Shadow Labyrinth"]] = {
 		low = 70,
 		high = 72,
@@ -2567,7 +2567,7 @@ do
 		complex = BZ["Auchindoun"],
 		entrancePortal = { BZ["Terokkar Forest"], 39.6, 65.5 },
 	}
-	
+
 	zones[BZ["Sethekk Halls"]] = {
 		low = 67,
 		high = 69,
@@ -2578,7 +2578,7 @@ do
 		complex = BZ["Auchindoun"],
 		entrancePortal = { BZ["Terokkar Forest"], 39.6, 65.5 },
 	}
-	
+
 	zones[BZ["Mana-Tombs"]] = {
 		low = 64,
 		high = 66,
@@ -2589,7 +2589,7 @@ do
 		complex = BZ["Auchindoun"],
 		entrancePortal = { BZ["Terokkar Forest"], 39.6, 65.5 },
 	}
-	
+
 	zones[BZ["Hellfire Ramparts"]] = {
 		low = 60,
 		high = 62,
@@ -2600,7 +2600,7 @@ do
 		complex = BZ["Hellfire Citadel"],
 		entrancePortal = { BZ["Hellfire Peninsula"], 46.8, 54.9 },
 	}
-	
+
 	zones[BZ["The Blood Furnace"]] = {
 		low = 61,
 		high = 63,
@@ -2611,7 +2611,7 @@ do
 		complex = BZ["Hellfire Citadel"],
 		entrancePortal = { BZ["Hellfire Peninsula"], 46.8, 54.9 },
 	}
-	
+
 	zones[BZ["The Shattered Halls"]] = {
 		low = 70,
 		high = 72,
@@ -2622,7 +2622,7 @@ do
 		complex = BZ["Hellfire Citadel"],
 		entrancePortal = { BZ["Hellfire Peninsula"], 46.8, 54.9 },
 	}
-	
+
 	zones[BZ["Magtheridon's Lair"]] = {
 		low = 70,
 		high = 70,
@@ -2633,7 +2633,7 @@ do
 		complex = BZ["Hellfire Citadel"],
 		entrancePortal = { BZ["Hellfire Peninsula"], 46.8, 54.9 },
 	}
-	
+
 	zones[BZ["The Slave Pens"]] = {
 		low = 62,
 		high = 64,
@@ -2644,7 +2644,7 @@ do
 		complex = BZ["Coilfang Reservoir"],
 		entrancePortal = { BZ["Zangarmarsh"], 50.2, 40.8 },
 	}
-	
+
 	zones[BZ["The Underbog"]] = {
 		low = 63,
 		high = 65,
@@ -2655,7 +2655,7 @@ do
 		complex = BZ["Coilfang Reservoir"],
 		entrancePortal = { BZ["Zangarmarsh"], 50.2, 40.8 },
 	}
-	
+
 	zones[BZ["The Steamvault"]] = {
 		low = 70,
 		high = 72,
@@ -2666,7 +2666,7 @@ do
 		complex = BZ["Coilfang Reservoir"],
 		entrancePortal = { BZ["Zangarmarsh"], 50.2, 40.8 },
 	}
-	
+
 	zones[BZ["Serpentshrine Cavern"]] = {
 		low = 70,
 		high = 70,
@@ -2677,7 +2677,7 @@ do
 		complex = BZ["Coilfang Reservoir"],
 		entrancePortal = { BZ["Zangarmarsh"], 50.2, 40.8 },
 	}
-	
+
 	zones[BZ["Gruul's Lair"]] = {
 		low = 70,
 		high = 70,
@@ -2687,7 +2687,7 @@ do
 		type = "Instance",
 		entrancePortal = { BZ["Blade's Edge Mountains"], 68, 24 },
 	}
-	
+
 	zones[BZ["The Mechanar"]] = {
 		low = 69,
 		high = 72,
@@ -2698,7 +2698,7 @@ do
 		complex = BZ["Tempest Keep"],
 		entrancePortal = { BZ["Netherstorm"], 76.5, 65.1 },
 	}
-	
+
 	zones[BZ["The Botanica"]] = {
 		low = 70,
 		high = 72,
@@ -2709,7 +2709,7 @@ do
 		complex = BZ["Tempest Keep"],
 		entrancePortal = { BZ["Netherstorm"], 76.5, 65.1 },
 	}
-	
+
 	zones[BZ["The Arcatraz"]] = {
 		low = 70,
 		high = 72,
@@ -2740,7 +2740,7 @@ do
 		type = "Battleground",
 		texture = "NetherstormArena",
 	}
- 
+
 	-- arenas
 	zones[BZ["Blade's Edge Arena"]] = {
 		low = 70,
@@ -2755,14 +2755,14 @@ do
 		continent = Outland,
 		type = "Arena",
 	}
-	
+
 	zones[BZ["Ruins of Lordaeron"]] = {
 		low = 70,
 		high = 70,
 		continent = Kalimdor,
 		type = "Arena",
 	}
-	
+
 	-- 2.4 zones
 	zones[BZ["Isle of Quel'Danas"]] = {
 		continent = Eastern_Kingdoms,
@@ -2775,7 +2775,7 @@ do
 		},
 		fishing_min = 380, --TODO: validate
 	}
-	
+
 	zones[BZ["Magisters' Terrace"]] = {
 		low = 70,
 		high = 70,
@@ -2785,7 +2785,7 @@ do
 		type = "Instance",
 		entrancePortal = { BZ["Isle of Quel'Danas"], 61.3, 30.9 },
 	}
-	
+
 	zones[BZ["Sunwell Plateau"]] = {
 		low = 70,
 		high = 70,
@@ -2795,7 +2795,7 @@ do
 		type = "Instance",
 		entrancePortal = { BZ["Isle of Quel'Danas"], 44.3, 45.7 },
 	}
-	
+
 	local continentNames = { GetMapContinents() }
 	local doneZones = {}
 	for continentID, continentName in ipairs(continentNames) do
@@ -2821,12 +2821,12 @@ do
 				break
 			end
 			doneZones[name] = true
-			
+
 			if fileName == "EversongWoods" or fileName == "Ghostlands" or fileName == "Sunwell" or fileName == "SilvermoonCity" then
 				scrollX = scrollX - 0.00168
 				scrollY = scrollY + 0.01
 			end
-			
+
 			if zones[name] then
 				zones[name].yards = texX * continentYards
 				zones[name].x_offset = scrollX * continentYards
@@ -2863,6 +2863,6 @@ do
 		end
 	end
 	zones = nil
-	
+
 	PLAYER_LEVEL_UP(Tourist)
 end
