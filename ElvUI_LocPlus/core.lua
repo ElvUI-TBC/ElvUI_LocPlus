@@ -297,10 +297,10 @@ local function UpdateTooltip()
 	if E.db.locplus.tt then
 		if E.db.locplus.tthint then
 			GameTooltip:AddLine(" ")
-			GameTooltip:AddDoubleLine(L["LeftClick : "], L["Toggle WorldMap"], 0.7, 0.7, 1, 0.7, 0.7, 1)
-			GameTooltip:AddDoubleLine(L["RightClick : "], L["Toggle Configuration"],0.7, 0.7, 1, 0.7, 0.7, 1)
-			GameTooltip:AddDoubleLine(L["ShiftClick : "], L["Send position to chat"],0.7, 0.7, 1, 0.7, 0.7, 1)
-			GameTooltip:AddDoubleLine(L["CtrlClick : "], L["Toggle Datatexts"],0.7, 0.7, 1, 0.7, 0.7, 1)
+			GameTooltip:AddDoubleLine(L["Left Click : "], L["Toggle WorldMap"], 0.7, 0.7, 1, 0.7, 0.7, 1)
+			GameTooltip:AddDoubleLine(L["Right Click : "], L["Toggle Configuration"],0.7, 0.7, 1, 0.7, 0.7, 1)
+			GameTooltip:AddDoubleLine(L["Shift Click : "], L["Send position to chat"],0.7, 0.7, 1, 0.7, 0.7, 1)
+			GameTooltip:AddDoubleLine(L["Ctrl Click : "], L["Toggle Datatexts"],0.7, 0.7, 1, 0.7, 0.7, 1)
 		end
 		GameTooltip:Show()
 	else
