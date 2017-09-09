@@ -39,8 +39,8 @@ LPB.version = GetAddOnMetadata("ElvUI_LocPlus", "Version")
 if E.db.locplus == nil then E.db.locplus = {} end
 
 do
-	DT:RegisterPanel(LeftCoordDtPanel, 1, "ANCHOR_BOTTOMLEFT", 100, -4)
-	DT:RegisterPanel(RightCoordDtPanel, 1, "ANCHOR_BOTTOMRIGHT", -100, -4)
+	DT:RegisterPanel(LeftCoordDtPanel, 1, "ANCHOR_BOTTOMLEFT", E.db.locplus.dtwidth, -4)
+	DT:RegisterPanel(RightCoordDtPanel, 1, "ANCHOR_BOTTOMRIGHT", -E.db.locplus.dtwidth, -4)
 
 	L["RightCoordDtPanel"] = L["LocationPlus Right Panel"]
 	L["LeftCoordDtPanel"] = L["LocationPlus Left Panel"]
@@ -312,7 +312,7 @@ end
 -- mouse over the location panel
 local function LocPanel_OnEnter(self,...)
 	local width = self:GetWidth()
-	GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT", width, -4)
+	GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT", -width, -4)
 	GameTooltip:ClearAllPoints()
 	GameTooltip:SetPoint("BOTTOM", self, "BOTTOM", 0, 0)
 
