@@ -316,10 +316,9 @@ end
 
 -- mouse over the location panel
 local function LocPanel_OnEnter(self,...)
-	local width = self:GetWidth()
-	GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT", -width, -4)
+	GameTooltip:SetOwner(self, "ANCHOR_PRESERVE")
 	GameTooltip:ClearAllPoints()
-	GameTooltip:SetPoint("BOTTOM", self, "BOTTOM", 0, 0)
+	GameTooltip:SetPoint("TOP", self, "BOTTOM", 0, -4)
 
 	if InCombatLockdown() and E.db.locplus.ttcombathide then
 		GameTooltip:Hide()
