@@ -3,10 +3,10 @@ local LPB = E:NewModule("LocationPlus", "AceTimer-3.0")
 local DT = E:GetModule("DataTexts")
 local LSM = LibStub("LibSharedMedia-3.0")
 local EP = LibStub("LibElvUIPlugin-1.0")
-
 local tourist = LibStub("LibTourist-3.0")
 
-local format, tonumber, pairs, print = string.format, tonumber, pairs, print
+local tonumber, pairs, print = tonumber, pairs, print
+local format = string.format
 
 local CreateFrame = CreateFrame
 local ChatFrameEditBox = ChatFrameEditBox
@@ -25,8 +25,6 @@ local GameTooltip, WorldMapFrame = _G["GameTooltip"], _G["WorldMapFrame"]
 
 local PLAYER, UNKNOWN, TRADE_SKILLS, LEVEL_RANGE, STATUS, HOME, CONTINENT = PLAYER, UNKNOWN, TRADE_SKILLS, LEVEL_RANGE, STATUS, HOME, CONTINENT
 local SANCTUARY_TERRITORY, ARENA, HOSTILE, CONTESTED_TERRITORY, COMBAT, AGGRO_WARNING_IN_INSTANCE, PVP, RAID = SANCTUARY_TERRITORY, ARENA, HOSTILE, CONTESTED_TERRITORY, COMBAT, AGGRO_WARNING_IN_INSTANCE, PVP, RAID
-
--- GLOBALS: LocationPlusPanel, LeftCoordDtPanel, RightCoordDtPanel, XCoordsPanel, YCoordsPanel, selectioncolor, continent, continentID
 
 local left_dtp = CreateFrame("Frame", "LeftCoordDtPanel", E.UIParent)
 local right_dtp = CreateFrame("Frame", "RightCoordDtPanel", E.UIParent)
@@ -380,7 +378,7 @@ local function LocPanel_OnClick(self, btn)
 					message = format("%s (%s)", zoneText, coords)
 				end
 
-			if(not ChatFrameEditBox:IsShown()) then
+			if not ChatFrameEditBox:IsShown() then
 				ChatFrameEditBox:Show()
 				ChatEdit_UpdateHeader(ChatFrameEditBox)
 			end
@@ -642,10 +640,8 @@ function LPB:UpdateLocation()
 		LocationPlusPanel.Text:Width(autowidth)
 	else
 		LocationPlusPanel:Width(fixedwidth)
-		if E.db.locplus.trunc then
-			LocationPlusPanel.Text:Width(fixedwidth - 18)
-			LocationPlusPanel.Text:SetWordWrap(false)
-		elseif autowidth > fixedwidth then
+
+		if autowidth > fixedwidth then
 			LocationPlusPanel:Width(autowidth)
 			LocationPlusPanel.Text:Width(autowidth)
 		end
